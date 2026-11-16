@@ -1,0 +1,10 @@
+FROM public.ecr.aws/docker/library/python:3.13-slim
+WORKDIR /app
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+COPY app.py worker.py ./
+RUN useradd --uid 10001 --create-home lab
+USER 10001
+ENV PYTHONUNBUFFERED=1
+EXPOSE 8080
+CMD ["python", "app.py"]
